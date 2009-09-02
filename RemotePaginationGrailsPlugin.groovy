@@ -13,7 +13,7 @@ class RemotePaginationGrailsPlugin {
     // TODO Fill in these fields
     def author = "Amit Jain"
     def authorEmail = "amit@intelligrape.com"
-    def title = "A Remote Pagination Plugin"
+    def title = "Remote Pagination Plugin"
     def description = '''
    Remote-Pagination plugin provides tags for pagination and to sort columns without page refresh, using ajax and loads only the list of objects needed. It supports multiple paginations as well. More than one remotePaginate and remoteSortableColumn can be used.
 '''
