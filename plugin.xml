@@ -1,15 +1,13 @@
-<plugin name='remote-pagination' version='0.2' grailsVersion='1.1 &gt; *'>
+<plugin name='remote-pagination' version='0.2.1' grailsVersion='1.1 &gt; *'>
   <author>Amit Jain</author>
   <authorEmail>amit@intelligrape.com</authorEmail>
-  <title>A Remote Pagination Plugin</title>
+  <title>Remote Pagination Plugin</title>
   <description>
    Remote-Pagination plugin provides tags for pagination and to sort columns without page refresh, using ajax and loads only the list of objects needed. It supports multiple paginations as well. More than one remotePaginate and remoteSortableColumn can be used.
 </description>
   <documentation>http://grails.org/RemotePagination+Plugin</documentation>
   <resources>
     <resource>com.intelligrape.util.RemotePaginationTagLib</resource>
-    <resource>DataSource</resource>
-    <resource>UrlMappings</resource>
   </resources>
   <dependencies />
 </plugin>
