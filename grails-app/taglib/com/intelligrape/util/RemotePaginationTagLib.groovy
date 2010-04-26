@@ -28,6 +28,7 @@ class RemotePaginationTagLib {
         def offset = params.offset?.toInteger()
         def max = params.max?.toInteger()
         def maxsteps = params.maxsteps?.toInteger()
+        List pageSizes = attrs.pageSizes?:[]
 
         if (!offset) offset = (attrs.offset ? attrs.offset.toInteger() : 0)
 
@@ -116,6 +117,8 @@ class RemotePaginationTagLib {
                 (attrs.next ? attrs.next : messageSource.getMessage('paginate.next', null, messageSource.getMessage('default.paginate.next', null, 'Next', locale), locale))
             }
         }
+       if(pageSizes)
+              writer << "<span>" + select(from:pageSizes,value:max, name:"max", onchange:"${remoteFunction(action:action,update:update, params:'\'max=\' + this.value' )}") + "</span>"
     }
 
     /**
@@ -149,6 +152,9 @@ class RemotePaginationTagLib {
 
         // add sorting property and params to link params
         def linkParams = [:]
+        if (attrs.controller) {
+                linkParams.controller = attrs.controller
+        }
         if (params.id) linkParams.put("id", params.id)
         if (attrs.params) linkParams.putAll(attrs.remove("params"))
         linkParams.sort = property
