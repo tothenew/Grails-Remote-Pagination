@@ -25,6 +25,7 @@ class RemotePaginationTagLib {
         def total = attrs.total.toInteger()
         def update = attrs.update
         def action = attrs.action
+        def controller = attrs.controller
         def offset = params.offset?.toInteger()
         def max = params.max?.toInteger()
         def maxsteps = params.maxsteps?.toInteger()
@@ -37,9 +38,13 @@ class RemotePaginationTagLib {
         if (!maxsteps) maxsteps = (attrs.maxsteps ? attrs.maxsteps.toInteger() : 10)
 
         def linkParams = [offset: offset - max, max: max]
+        def selectParams = [:]
         if (params.sort) linkParams.sort = params.sort
         if (params.order) linkParams.order = params.order
-        if (attrs.params) linkParams.putAll(attrs.params)
+        if (attrs.params) {
+          linkParams.putAll(attrs.params)
+          selectParams.putAll(linkParams)
+        }
 
         def linkTagAttrs = [action: action, update: update]
         if (attrs.controller) {
@@ -117,8 +122,12 @@ class RemotePaginationTagLib {
                 (attrs.next ? attrs.next : messageSource.getMessage('paginate.next', null, messageSource.getMessage('default.paginate.next', null, 'Next', locale), locale))
             }
         }
-       if(pageSizes)
-              writer << "<span>" + select(from:pageSizes,value:max, name:"max", onchange:"${remoteFunction(action:action,update:update, params:'\'max=\' + this.value' )}") + "</span>"
+
+       if(pageSizes) {
+              selectParams.remove("max")
+              def paramsStr= selectParams.collect {it.key + "=" + it.value}.join("&")
+              writer << "<span>" + select(from:pageSizes,value:max, name:"max", onchange:"${remoteFunction(controller:controller, action:action,update:update, params:'\'' +paramsStr + '&max=\' + this.value'  )}") + "</span>"
+       }
     }
 
     /**
