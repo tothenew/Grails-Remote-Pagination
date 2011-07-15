@@ -123,7 +123,7 @@ class RemotePaginationTagLib {
         if (pageSizes) {
             selectParams.remove("max")
             def paramsStr = selectParams.collect {it.key + "=" + it.value}.join("&")
-            paramsStr += '\'' + paramsStr + '&max=\' + this.value'
+	    paramsStr = '\'' + paramsStr + '&max=\' + this.value'
             linkTagAttrs.params = paramsStr
             writer << "<span>" + select(from: pageSizes, value: max, name: "max", onchange: "${remoteFunction(linkTagAttrs.clone())}") + "</span>"
         }
