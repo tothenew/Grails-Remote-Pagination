@@ -24,12 +24,12 @@ class RemotePaginationTagLib {
         def messageSource = grailsAttributes.getApplicationContext().getBean("messageSource")
         def locale = RCU.getLocale(request)
 
-        def total = attrs.total.toInteger()
-        def offset = params.offset?.toInteger()
-        def max = params.max?.toInteger()
-        def maxsteps = params.maxsteps?.toInteger()
+        int total = attrs.total.toInteger()
+        int offset = params.offset?.toInteger()
+        int max = params.max?.toInteger()
+        int maxsteps = params.maxsteps?.toInteger()
         List pageSizes = attrs.pageSizes ?: []
-        def linkTagAttrs = attrs
+        Map linkTagAttrs = attrs
 
 
         if (!offset) offset = (attrs.offset ? attrs.offset.toInteger() : 0)
@@ -38,8 +38,8 @@ class RemotePaginationTagLib {
 
         if (!maxsteps) maxsteps = (attrs.maxsteps ? attrs.maxsteps.toInteger() : 10)
 
-        def linkParams = [offset: offset - max, max: max]
-        def selectParams = [:]
+        Map linkParams = [offset: offset - max, max: max]
+        Map selectParams = [:]
         if (params.sort) linkParams.sort = params.sort
         if (params.order) linkParams.order = params.order
         if (attrs.params) {
@@ -51,7 +51,7 @@ class RemotePaginationTagLib {
         linkTagAttrs.params = linkParams
 
         // determine paging variables
-        def steps = maxsteps > 0
+        boolean steps = maxsteps > 0
         int currentstep = (offset / max) + 1
         int firststep = 1
         int laststep = Math.round(Math.ceil(total / max))
@@ -120,10 +120,11 @@ class RemotePaginationTagLib {
             }
         }
 
-        if (pageSizes) {
+        if (total > max && pageSizes) {
             selectParams.remove("max")
-            def paramsStr = selectParams.collect {it.key + "=" + it.value}.join("&")
-	    paramsStr = '\'' + paramsStr + '&max=\' + this.value'
+            selectParams.offset=0
+            String paramsStr = selectParams.collect {it.key + "=" + it.value}.join("&")
+            paramsStr = '\'' + paramsStr + '&max=\' + this.value'
             linkTagAttrs.params = paramsStr
             writer << "<span>" + select(from: pageSizes, value: max, name: "max", onchange: "${remoteFunction(linkTagAttrs.clone())}") + "</span>"
         }
@@ -148,16 +149,16 @@ class RemotePaginationTagLib {
             throwTagError("Tag [remoteSortableColumn] is missing required attribute [action]")
 
         def property = attrs.remove("property")
-        def defaultOrder = attrs.remove("defaultOrder")
+        String defaultOrder = attrs.remove("defaultOrder")
         if (defaultOrder != "desc") defaultOrder = "asc"
-        def linkTagAttrs = attrs
+        Map linkTagAttrs = attrs
 
         // current sorting property and order
-        def sort = params.sort
-        def order = params.order
+        String sort = params.sort
+        String order = params.order
 
         // add sorting property and params to link params
-        def linkParams = [:]
+        Map linkParams = [:]
         if (params.id) linkParams.put("id", params.id)
         if (attrs.params) linkParams.putAll(attrs.remove("params"))
         linkParams.sort = property
@@ -194,7 +195,6 @@ class RemotePaginationTagLib {
         writer << """>${remoteLink(linkTagAttrs.clone()) { title } }
                 </th>"""
     }
-
 }
 
 
