@@ -24,10 +24,10 @@ class RemotePaginationTagLib {
         def messageSource = grailsAttributes.getApplicationContext().getBean("messageSource")
         def locale = RCU.getLocale(request)
 
-        int total = attrs.total.toInteger()
-        int offset = params.offset?.toInteger()
-        int max = params.max?.toInteger()
-        int maxsteps = params.maxsteps?.toInteger()
+        Integer total = attrs.total.toInteger()
+        Integer offset = params.offset?.toInteger()
+        Integer max = params.max?.toInteger()
+        Integer maxsteps = params.maxsteps?.toInteger()
         List pageSizes = attrs.pageSizes ?: []
         Map linkTagAttrs = attrs
 
@@ -52,9 +52,9 @@ class RemotePaginationTagLib {
 
         // determine paging variables
         boolean steps = maxsteps > 0
-        int currentstep = (offset / max) + 1
-        int firststep = 1
-        int laststep = Math.round(Math.ceil(total / max))
+        Integer currentstep = (offset / max) + 1
+        Integer firststep = 1
+        Integer laststep = Math.round(Math.ceil(total / max))
 
         // display previous link when not on firststep
         if (currentstep > firststep) {
@@ -70,8 +70,8 @@ class RemotePaginationTagLib {
             linkTagAttrs.class = 'step'
 
             // determine begin and endstep paging variables
-            int beginstep = currentstep - Math.round(maxsteps / 2) + (maxsteps % 2)
-            int endstep = currentstep + Math.round(maxsteps / 2) - 1
+            Integer beginstep = currentstep - Math.round(maxsteps / 2) + (maxsteps % 2)
+            Integer endstep = currentstep + Math.round(maxsteps / 2) - 1
 
             if (beginstep < firststep) {
                 beginstep = firststep
@@ -196,5 +196,3 @@ class RemotePaginationTagLib {
                 </th>"""
     }
 }
-
-
